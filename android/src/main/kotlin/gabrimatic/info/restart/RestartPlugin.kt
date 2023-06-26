@@ -64,14 +64,12 @@ class RestartPlugin : FlutterPlugin, MethodCallHandler {
      * and then exits the running application.
      */
     private fun restartApp() {
-        context.startActivity(
-            Intent.makeRestartActivityTask(
-                (context.packageManager.getLaunchIntentForPackage(
-                    context.packageName
-                ))!!.component
-            )
-        )
-        Runtime.getRuntime().exit(0)
+        val intent = context.packageManager?.getLaunchIntentForPackage(
+        context.packageName)
+        intent?.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        intent?.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        context.startActivity(intent)
+
     }
 
 }
